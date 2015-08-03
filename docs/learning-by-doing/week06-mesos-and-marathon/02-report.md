@@ -30,7 +30,8 @@ Tổng quan
 	- Web UI cho việc theo dõi trạng thái của cluster
 
 Kiến trúc
-![Mesos_architecture]()
+![Mesos_architecture](https://github.com/huanpc/lab_clound_computing/blob/master/docs/learning-by-doing/week06-mesos-and-marathon/images/mesos_architecture.png)
+
 - Master deamon:  chạy trên master node và quản lý các slave deamon
 - Slave daemon: chạy trên slave node và thực thi các task thuộc về các framework
 - Framework: thường là một Mesos application, bao gồm:
@@ -135,8 +136,15 @@ Kết quả:
 ```
 
 - Vào web interface của Marathon:
-![Marathon]()
-![Marathon_task]()
+![Marathon](https://github.com/huanpc/lab_clound_computing/blob/master/docs/learning-by-doing/week06-mesos-and-marathon/images/marathon.png)
+
+![Marathon_task](https://github.com/huanpc/lab_clound_computing/blob/master/docs/learning-by-doing/week06-mesos-and-marathon/images/Marathon_task.png)
+
+- Giao diện hoạt động của Mesos:
+![Mesos_webUI](https://github.com/huanpc/lab_clound_computing/blob/master/docs/learning-by-doing/week06-mesos-and-marathon/images/mesos.png)
+
+- Application đang running trên 1 slave:
+![App_running](https://github.com/huanpc/lab_clound_computing/blob/master/docs/learning-by-doing/week06-mesos-and-marathon/images/slave_running.png)
 
 ######Scaling up, down
 
