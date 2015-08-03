@@ -155,6 +155,7 @@ $ curl -X PUT -H "Content-Type: application/json" http://localhost:8080/v2/apps/
 **III. Một số REST API của Marathon  hỗ trrợ việc  deploy một application** 
 
 - Cách sử dụng: gửi một `HTTP REQUEST` tới địa chỉ `http://localhost:8080/{command}` 
+
 Method | Command| Meaning
 ------------- | -------------|-------------
 POST  | /v2/apps|Khởi chạy một application
