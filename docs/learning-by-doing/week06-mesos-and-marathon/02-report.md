@@ -4,7 +4,7 @@
 
 **I.  Đôi nét về Mesosphere**
 
-1.	Mososphere
+######Mososphere
 
 - Mesosphere là một giải pháp phần mềm được mở rộng từ Apache Mesos nhằm  mục đích  cung cấp một cách thức quản lý server infrastructures, tập trung vào mô hình nhiều cluster.
 - Mesosphere là sự kết hợp của các thành phần Mesos, Marathon, Chronos.
@@ -18,7 +18,7 @@
 	- Port unification
 	- End point elasticity
 
-2. Apache Mesos
+######Apache Mesos
 
 Tổng quan
 - Apache Mesos là một trình quản lý cluster mã nguồn mở, làm đơn giản hóa quá trình triển khai một ứn dụng trên một "scalable cluster of servers" 
@@ -43,7 +43,7 @@ Kiến trúc
 > Lượng tài nguyên được phân bố tới một framework phụ thuộc vào các policy được thiết lập trên master node, và bộ framework scheduler sẽ quyết định sử dụng  offer nào. Sau đó, Mesos Master sẽ khởi chạy các task trên các Mesos slave thích hợp. Một khi task được hoàn thành, các tài nguyên sử dụng sẽ được giải phóng, chu trình gửi-nhận-xử lý các offer sẽ lại tiếp tục để lên lịch thực thi các task.
 
 
-3. Marathon
+######Marathon
 
 - Marathon là một framework cho Mesos, được thiết kế để triển khai "long-running application".
 -  Thay thế cho "traditional init system" trong mô hình Mesosphere.
@@ -57,7 +57,7 @@ Kiến trúc
 	- Healing capabitlities
 Tham khảo [https://github.com/mesosphere/marathon]
 
-4. Chronos
+######Chronos
 
 - Chronos là một framework cho Mesos, phát triển bởi Airbnb, là sự thay thế cho `cron` (trong LINUX). 
 - Là thành phần thực  hiện điều phối và schedule job Mesos.
@@ -65,20 +65,27 @@ Tham khảo [https://github.com/mesosphere/marathon]
 - Trong mô hình Mesosphere, khác với Marathon, Chronos cung cấp một cách khác cho việc thực thi một ứng dụng, theo lịch hoặc các điều kiện kích hoạt.
 
 Tham khảo [https://github.com/mesosphere/chronos]
+
 **II. Sử dụng Marathon triển khai một application trong  Docker**
-1. Cài đặt bộ mesos testing
+
+######Cài đặt bộ mesos testing
+
 - Cài đặt docker-compose (Xem thêm [https://docs.docker.com/compose/install/])
 - Tải bộ mesos testing từ github:
+
 ```
 $ git clone https://github.com/dontrebootme/compose-mesos.git
 $ cd compose-mesos
 ```
+
 - Sửa lại các trường `MESOS_HOSTNAME=localhost`  trong `master1, slave1, slave2,slave3` trong file `docker-compose.yml` 
 - Khởi chạy các container từ bộ testing:
+
 ```
 $ docker-compose up -d
 ```
 - Kết quả:
+
 ```
 $compose-mesos# docker ps 
 CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS              PORTS                              NAMES
@@ -90,14 +97,18 @@ c3706aea670d        mesosphere/marathon:v0.8.1            "./bin/start --maste  
 5193cd029a49        redjack/mesos-master:0.21.0           "mesos-master"         2 minutes ago       Up 2 minutes        0.0.0.0:5050->5050/tcp             composemesos_mesos1_1     
 85b4b3a791f9        jplock/zookeeper:3.4.6                "/opt/zookeeper/bin/   2 minutes ago       Up 2 minutes        2181/tcp, 2888/tcp, 3888/tcp       composemesos_zk1_1     
 ```
+
 - Truy cập vào các Web user interface theo địa chỉ:
 	- Mesos Master	http://localhost:5050
 	- Marathon	http://localhost:8080
 	- Chronos	http://localhost:4400
 
-2. Triển khai một ứng dụng trên Docker
+######Triển khai một ứng dụng trên Docker
+
 - Ý tưởng: tạo một application đơn giản chạy trên nền shell script thực hiện in ra liên tục dòng chữ `HELLO MARATHON`
+
 Bước 1: tạo file định nghĩa một application: 
+
 ```
 $touch hello_app.json
 $nano hello_app.json 
@@ -109,22 +120,29 @@ $nano hello_app.json
     "instances": 2
 }
 ```
+
 - Tham số `cmd` khai báo câu lệnh sẽ được thực thi khi ứng dụng khởi chạy.
 - Tham khảo thêm tại [đây](https://mesosphere.github.io/marathon/docs/application-basics.html)
 
 Bước 2: sử dụng HTTP API để deploy ứng dụng với file khai báo trên
+
 `$ curl -X POST -H "Content-Type: application/json" http://localhost/v2/apps -d@hello_app.json`
 Các API của Marathon sẽ đề cập sau.
 Kết quả:
+
 ```
 {"id":"/basic-0","cmd":"while [ true ] ; do echo 'Hello Marathon' ; sleep 5 ; done","args":null,"user":null,"env":{},"instances":2,"cpus":0.1,"mem":10.0,"disk":0.0,"executor":"","constraints":[],"uris":[],"storeUrls":[],"ports":[0],"requirePorts":false,"backoffFactor":1.15,"container":null,"healthChecks":[],"dependencies":[],"upgradeStrategy":{"minimumHealthCapacity":1.0,"maximumOverCapacity":1.0},"labels":{},"version":"2015-08-03T14:12:37.890Z","deployments":[{"id":"eb46a15d-61cd-4adb-889f-823408923b4d"}],"tasks":[],"tasksStaged":0,"tasksRunning":0,"tasksHealthy":0,"tasksUnhealthy":0,"backoffSeconds":1,"maxLaunchDelaySeconds":3600}
 ```
+
 - Vào web interface của Marathon:
 ![Marathon]()
 ![Marathon_task]()
-3. Scaling up, down
+
+######Scaling up, down
+
 - Marathon cung cấp các hàm HTTP API hỗ trợ việc deploy, manage một application.
 - Để scale up, down, ta có thể tạo một `http request` với phương thức `PUT` có dạng như sau:
+
 ```
 $ curl -X PUT -H "Content-Type: application/json" http://localhost:8080/v2/apps/hello-app -d@hello_app.json
 ```
@@ -135,6 +153,7 @@ $ curl -X PUT -H "Content-Type: application/json" http://localhost:8080/v2/apps/
 - Tham khảo bên dưới một số API của Marathon
 
 **III. Một số REST API của Marathon  hỗ trrợ việc  deploy một application** 
+
 - Cách sử dụng: gửi một `HTTP REQUEST` tới địa chỉ `http://localhost:8080/{command}` 
 Method | Command| Meaning
 ------------- | -------------|-------------
@@ -147,4 +166,4 @@ GET |/v2/tasks |Liệt kê tất cả các task đang chạy
 
 Tham khảo thêm tại [đây](https://mesosphere.github.io/marathon/docs/rest-api.html#put-v2-apps-appid)
 
->Code demo sử dụng REST API để scale application trong cùng folder git
+>Code demo sử dụng REST API viết bằng python nằm trong cùng folder với báo cáo này.
