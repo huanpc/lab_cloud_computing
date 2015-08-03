@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Báo cáo tuần 4 - 5
 #### Auto - scaling team
 ##### Setup hệ thống monitoring.
@@ -207,3 +208,6 @@ while True:
 
 
 
+=======
+TODO
+>>>>>>> 763b05e510364ca39f458f38a4c1d480e3159350
