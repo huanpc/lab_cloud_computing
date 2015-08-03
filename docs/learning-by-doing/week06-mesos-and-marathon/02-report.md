@@ -96,41 +96,28 @@ c3706aea670d        mesosphere/marathon:v0.8.1            "./bin/start --maste  
 	- Chronos	http://localhost:4400
 
 2. Triển khai một ứng dụng trên Docker
-- Ý tưởng: tạo một http server đơn giản, trả về dòng chữ `HELLO WORLD`
+- Ý tưởng: tạo một application đơn giản chạy trên nền shell script thực hiện in ra liên tục dòng chữ `HELLO MARATHON`
 Bước 1: tạo file định nghĩa một application: 
 ```
-$touch demo_web_server.json
-$nano demo_web_server.json 
+$touch hello_app.json
+$nano hello_app.json 
 {
-  "id": "demo-server",
-  "cmd": "python3 -m http.server 8080",
-  "cpus": 0.5,
-  "mem": 32.0,
-  "container": {
-    "type": "DOCKER",
-    "docker": {
-      "image": "ubuntu:14.04",
-      "network": "BRIDGE",
-      "portMappings": [
-        { "containerPort": 8080, "hostPort": 0 }
-      ]
-    }
-  }
+    "id": "basic-0",
+    "cmd": "while [ true ] ; do echo 'Hello Marathon' ; sleep 5 ; done",
+    "cpus": 0.1,
+    "mem": 10.0,
+    "instances": 2
 }
-
 ```
+- Tham số `cmd` khai báo câu lệnh sẽ được thực thi khi ứng dụng khởi chạy.
+- Tham khảo thêm tại [đây](https://mesosphere.github.io/marathon/docs/application-basics.html)
 
-	- Dòng `"portMappings" : [
-        { "containerPort": 8080, "hostPort": 0 }` chỉ định `containerPort` sẽ được map sang cổng ngẫu nhiên của `host` 
-        - Tham số `cmd` khai báo câu lệnh sẽ được thực thi khi ứng dụng khởi chạy.
-        - Tham khảo thêm tại [đây](https://mesosphere.github.io/marathon/docs/application-basics.html)
 Bước 2: sử dụng HTTP API để deploy ứng dụng với file khai báo trên
-`$ curl -X POST -H "Content-Type: application/json" http://localhost/v2/apps -d@demo_web_server.json`
+`$ curl -X POST -H "Content-Type: application/json" http://localhost/v2/apps -d@hello_app.json`
 Các API của Marathon sẽ đề cập sau.
 Kết quả:
 ```
-$ curl -X POST -H "Content-Type: application/json" http://localhost:8080/v2/apps -d@demo_web_server.json
-{"id":"/demo-server","cmd":"python3 ./test.py","args":null,"user":null,"env":{},"instances":1,"cpus":0.5,"mem":32.0,"disk":0.0,"executor":"","constraints":[],"uris":[],"storeUrls":[],"ports":[0],"requirePorts":false,"backoffFactor":1.15,"container":{"type":"DOCKER","volumes":[],"docker":{"image":"ubuntu:14.04","network":"BRIDGE","portMappings":[{"containerPort":8080,"hostPort":0,"servicePort":0,"protocol":"tcp"}],"privileged":false,"parameters":[]}},"healthChecks":[],"dependencies":[],"upgradeStrategy":{"minimumHealthCapacity":1.0,"maximumOverCapacity":1.0},"labels":{},"version":"2015-08-03T04:13:40.047Z","tasks":[],"deployments":[{"id":"ef4f7158-852c-4398-ad8c-41cd7b739b64"}],"tasksStaged":0,"tasksRunning":0,"tasksHealthy":0,"tasksUnhealthy":0,"backoffSeconds":1,"maxLaunchDelaySeconds":3600}
+{"id":"/basic-0","cmd":"while [ true ] ; do echo 'Hello Marathon' ; sleep 5 ; done","args":null,"user":null,"env":{},"instances":2,"cpus":0.1,"mem":10.0,"disk":0.0,"executor":"","constraints":[],"uris":[],"storeUrls":[],"ports":[0],"requirePorts":false,"backoffFactor":1.15,"container":null,"healthChecks":[],"dependencies":[],"upgradeStrategy":{"minimumHealthCapacity":1.0,"maximumOverCapacity":1.0},"labels":{},"version":"2015-08-03T14:12:37.890Z","deployments":[{"id":"eb46a15d-61cd-4adb-889f-823408923b4d"}],"tasks":[],"tasksStaged":0,"tasksRunning":0,"tasksHealthy":0,"tasksUnhealthy":0,"backoffSeconds":1,"maxLaunchDelaySeconds":3600}
 ```
 - Vào web interface của Marathon:
 ![Marathon]()
