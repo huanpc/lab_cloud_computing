@@ -2,7 +2,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 hostName = "localhost"
-hostPort = 8080
+hostPort = 8084
 
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -14,11 +14,7 @@ class MyServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes("</body></html>", "utf-8"))
 
 myServer = HTTPServer((hostName, hostPort), MyServer)
+myServer.serve_forever()
 
-try:
-    myServer.serve_forever()
-except KeyboardInterrupt:
-    myServer.server_close()		
-    pass
 
 
