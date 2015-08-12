@@ -44,6 +44,7 @@ Kiến trúc
 > Lượng tài nguyên được phân bố tới một framework phụ thuộc vào các policy được thiết lập trên master node, và bộ framework scheduler sẽ quyết định sử dụng  offer nào. Sau đó, Mesos Master sẽ khởi chạy các task trên các Mesos slave thích hợp. Một khi task được hoàn thành, các tài nguyên sử dụng sẽ được giải phóng, chu trình gửi-nhận-xử lý các offer sẽ lại tiếp tục để lên lịch thực thi các task.
 
 *Ví du về Resource Offer*
+
 ![Resource offer](https://github.com/huanpc/lab_cloud_computing/blob/master/docs/learning-by-doing/week06-mesos-and-marathon/images/resource-offer.jpg)
 
 ######Marathon
