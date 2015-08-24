@@ -10,7 +10,8 @@
     -   Môi trường khởi chạy ứng dụng : Mesos
     -   Môi trường giả lập lượng truy cập của người dùng: jmeter
     -   Bộ load balancing Haproxy
--   Hệ thống auto - scaling sẽ thực hiện việc turn on, turn off các instance (task) của một application được deploy trên Mesos bằng cách sử dụng các hàm REST API được cung cấp sẵn của Marathon
+-   Hệ thống auto - scaling sẽ thực hiện việc turn on, turn off các instance (task) của một application được deploy trên Mesos bằng cách sử dụng các hàm REST API được cung cấp sẵn của Marathon.
+-   Application thử nghiệm là một web service đơn giản.
 
 #### Giải thuật
 ```
