@@ -78,6 +78,7 @@ def main():
             result = client.query(query)
             memUsage = result[0]['points'][0][1]
             containerMemUsageList.append(memUsage)
+        #CHECK INSTANCES ONE BY ONE AND SCALE
         print('################')
         for i in range(num):
             currentTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
