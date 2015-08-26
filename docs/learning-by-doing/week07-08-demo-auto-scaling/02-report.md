@@ -22,6 +22,11 @@ while true:
         containerCpuUsageList = thực hiện lấy lượng cpu usage của từng task container
         containerMemUsageList = thực hiện lấy lượng memory usage của từng task container
     for  0<i<lenght(taskIdList):
-        thực hiện scale từng task instance, dựa vào luật  thres-hold based rule
+        if (containerMemUsageList[i]>MEM_THRES_HOLD_UP)
+            scale up, add 1 task
+            cập nhật bộ load-balancing haproxy
+        if (containerMemUsageList[i]<MEM_THRES_HOLD_DOWN)
+            scale down, destroy 1 task
+            cập nhật bộ load-balancing haproxy    
 ```
 #### Demo (be writting)
