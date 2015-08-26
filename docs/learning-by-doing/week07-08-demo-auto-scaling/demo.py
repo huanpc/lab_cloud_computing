@@ -107,7 +107,7 @@ def checkCpuBasedRule(container,Cpu,numOfInstance):
         return False
 
 def updateHaproxy():
-    sudoPassword = '444455555'
+    sudoPassword = '******'
     command = 'sudo python ./servicerouter.py --marathon http://localhost:8080 --haproxy-config /etc/haproxy/haproxy.cfg'
     os.system('echo %s|sudo -S %s' % (sudoPassword, command))
 
