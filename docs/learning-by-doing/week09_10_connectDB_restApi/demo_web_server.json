@@ -1,0 +1,24 @@
+{
+  "id": "demo-server",
+  "cpus": 0.5,
+  "cmd": "python3 /test/test.py",
+  "intances": 5,			
+  "mem": 64.0, 
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "ubuntu:14.04",
+      "network": "BRIDGE",
+      "portMappings": [
+        { "containerPort": 8084, "hostPort": 0 }
+      ]
+    },
+     "volumes": [
+            {
+                "containerPath": "/test",
+                "hostPath": "/home/huanpc/test",
+                "mode": "RO"
+            }
+        ]	
+  }	
+}
