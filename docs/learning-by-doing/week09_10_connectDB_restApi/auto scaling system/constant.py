@@ -27,8 +27,8 @@ SCALE_LINK = '/v2/apps/' + APP_ID + '?force=true'
 TIME_DELAY_LONG = 15
 TIME_DELAY_SORT = 5
 
-ROOT_PASSWORD = '444455555'
-
+ROOT_PASSWORD = ''
+MODEL_ENGINE = 'mysql+pymysql://root:autoscaling@secret@127.0.0.1:3306/policydb'
 SCHEMA = '''
 # PolicyDB
 # apps.enabled: 0-not scaled, 1-scaled

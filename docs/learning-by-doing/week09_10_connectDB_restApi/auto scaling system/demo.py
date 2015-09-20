@@ -12,6 +12,10 @@ from marathon import MarathonClient
 import Model
 
 def init():
+    '''
+
+    :return:
+    '''
     global  logger, influxdb_client, marathon_client
     logger = logging.getLogger('auto_scaling_system')
     logging.basicConfig(stream=sys.stderr, level=getattr(logging, 'INFO'))
@@ -20,8 +24,12 @@ def init():
 
     global app, cpu_policy, mem_policy
     app = Model.get_app(constant.APP_NAME)
-    cpu_policy = Model.get_policy(constant.APP_NAME,'cpu_policy')
-    mem_policy = Model.get_policy(constant.APP_NAME,'mem_policy')
+    policies = Model.get_policy_by_app_uuid(app.app_uuid)
+    for policy in policies:
+        if policy.metric_type ==0:
+            cpu_policy = policy
+        else:
+            mem_policy = policy
 
 def getListTaskForApp(app_name):
     '''
@@ -178,17 +186,6 @@ def updateHaproxy():
 def main():
     init()
     global app
-    # app =  Model.App(app_uuid=constant.APP_NAME,name=constant.APP_NAME,min_instances=1,max_instances=15,enabled=1,locked=0,next_time=0)
-    # Model.insert(app)
-    # cpu_policy = Model.Policy(app_uuid=constant.APP_NAME, policy_uuid='cpu_policy', metric_type=0, upper_threshold=0.1, \
-    #                     lower_threshold=0.001, instances_in=1, instances_out=1, cooldown_period=5, measurement_period=5,
-    #                     deleted=0)
-    # mem_policy = Model.Policy(app_uuid=constant.APP_NAME, policy_uuid='memory_policy', metric_type=1, upper_threshold=0.1, \
-    #                     lower_threshold=0.001, instances_in=1, instances_out=1, cooldown_period=5, measurement_period=5,
-    #                     deleted=0)
-    # Model.insert(cpu_policy)
-    # Model.insert(mem_policy)
-
     updateHaproxy()
     while True:
         taskIdList = getListTaskForApp(app.app_uuid)
