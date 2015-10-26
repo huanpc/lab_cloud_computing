@@ -11,8 +11,6 @@ import sys
 from marathon import MarathonClient
 import Model
 
-MARATHON_IP = 'http://25.22.28.94:8080'
-
 def init():
     '''
 
@@ -22,7 +20,7 @@ def init():
     logger = logging.getLogger('auto_scaling_system')
     logging.basicConfig(stream=sys.stderr, level=getattr(logging, 'INFO'))
     influxdb_client = InfluxDBClient(constant.HOST, constant.PORT, constant.USER, constant.PASS, constant.DATABASE)
-    marathon_client = MarathonClient(MARATHON_IP)
+    marathon_client = MarathonClient('http://localhost:8080')
 
     global app, cpu_policy, mem_policy
     app = Model.get_app(constant.APP_NAME)
@@ -41,10 +39,9 @@ def getListTaskForApp(app_name):
     '''
     task_list = []
     raw_data = marathon_client.list_tasks(app_name)
-    for item in raw_data:
-        taskId = item.id
-        # index = str(id).find('::')+2
-        task_list.append(taskId)
+    for id in raw_data:
+        index = str(id).find('::')+2
+        task_list.append(str(id)[index:])
     return task_list
 
 def get_list_container_for_app(task_list):
@@ -57,8 +54,6 @@ def get_list_container_for_app(task_list):
     for task_id in task_list:
         query = 'select container_name from mapping where' + ' mesos_task_id =~/.' + '*' + task_id + '.*/ limit 1'
         result = influxdb_client.query(query)
-        if result.__len__()==0:
-            continue
         containerName = result[0]['points'][0][2]
         logger.info(task_id + ' @@ ' + containerName)
         containerNameList.append(containerName)
@@ -113,9 +108,8 @@ def scaling(numOfInstance):
     :param numOfInstance:
     :return:
     '''
-    global app
     result = marathon_client.scale_app(constant.APP_NAME, numOfInstance)
-    logger.info('scale result: '+ result.__str__())
+    logger.info('scale result: '+ result)
     time.sleep(constant.TIME_DELAY_SORT)
     updateHaproxy()
 
@@ -186,7 +180,7 @@ def updateHaproxy():
     update haproxy
     :return:
     '''
-    command = 'sudo python ./servicerouter.py --marathon http://25.22.28.94:8080 --haproxy-config /etc/haproxy/haproxy.cfg'
+    command = 'sudo python ./servicerouter.py --marathon http://localhost:8080 --haproxy-config /etc/haproxy/haproxy.cfg'
     os.system('echo %s|sudo -S %s' % (constant.ROOT_PASSWORD, command))
 
 def main():
@@ -194,7 +188,7 @@ def main():
     global app
     updateHaproxy()
     while True:
-        taskIdList = getListTaskForApp(app.name)
+        taskIdList = getListTaskForApp(app.app_uuid)
         num = len(taskIdList)
         #
         logger.info('################')
@@ -207,7 +201,7 @@ def main():
         # CHECK INSTANCES ONE BY ONE AND SCALE
         logger.info('################')
         numOfInstance = num
-        for i in range(containerNameList.__len__()):
+        for i in range(num):
             if (checkMemoryBasedRule(containerNameList[i], containerMemUsageList[i], numOfInstance)):
                 continue
             else:

@@ -33,7 +33,7 @@ class App(Base):
     locked = Column(TINYINT(unsigned=True))
     next_time = Column(INTEGER(unsigned=True))
     policies = relationship("Policy", order_by="Policy.id", backref="app", cascade="all, delete, delete-orphan")
-    crons = relationship("Cron", order_by="Cron.Id", backref="app", cascade="all, delete, delete-orphan")
+    crons = relationship("Cron", order_by="Cron.id", backref="app", cascade="all, delete, delete-orphan")
 
     @staticmethod
     def __get(self):
@@ -54,7 +54,7 @@ class App(Base):
 class Policy(Base):
     __tablename__ = 'policies'
     id = Column(INTEGER, primary_key=True, autoincrement=True)
-    app_uuid = Column(VARCHAR(255), ForeignKey('App.app_uuid'))
+    app_uuid = Column(VARCHAR(255), ForeignKey('apps.app_uuid'))
     policy_uuid = Column(VARCHAR(255), unique=True)
     metric_type = Column(TINYINT(unsigned=True))
     upper_threshold = Column(FLOAT)
@@ -64,7 +64,6 @@ class Policy(Base):
     cooldown_period = Column(SMALLINT(unsigned=True))
     measurement_period = Column(SMALLINT(unsigned=True))
     deleted = Column(TINYINT(unsigned=True))
-    apps = relationship("App", order_by="App.id", backref="policies", cascade="all, delete, delete-orphan")
 
     @staticmethod
     def __get(self):
@@ -90,13 +89,13 @@ class Cron(Base):
 
     __tablename__ = 'crons'
     id = Column(INTEGER, primary_key=True, autoincrement=True)
-    app_uuid = Column(VARCHAR(255), ForeignKey('App.uuid'))
+    app_uuid = Column(VARCHAR(255), ForeignKey('apps.app_uuid'))
     cron_uuid = Column(VARCHAR(255),unique=True)
     min_instances = Column(SMALLINT(unsigned=True))
     max_instances = Column(SMALLINT(unsigned=True))
     cron_string = Column(VARCHAR(255))
     deleted = Column(TINYINT(unsigned=True))
-    apps = relationship("App", order_by="App.app_uuid", backref="crons", cascade="all, delete, delete-orphan")
+
 
     @staticmethod
     def __get(self):

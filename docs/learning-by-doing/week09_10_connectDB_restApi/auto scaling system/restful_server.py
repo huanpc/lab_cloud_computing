@@ -8,10 +8,11 @@ import json
 from aiohttp import web
 import Model
 import constant
+import hashlib
 
 # config
 HOST = '127.0.0.1'
-PORT = 5050
+PORT = 1111
 USER_NAME = 'huanpc'
 PASWD = '12345678'
 #

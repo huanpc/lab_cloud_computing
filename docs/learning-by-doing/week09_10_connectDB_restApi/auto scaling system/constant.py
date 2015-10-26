@@ -4,7 +4,7 @@ CPU_THRESHOLD_UP = 0.1
 CPU_THRESHOLD_DOWN = 0.001
 MEM_THRESHOLD_UP = 15700000.0
 MEM_THRESHOLD_DOWN = 2097152.0
-HOST = 'localhost'
+HOST = '25.22.28.94'
 PORT = 8086
 USER = 'root'
 PASS = 'root'
@@ -27,7 +27,7 @@ SCALE_LINK = '/v2/apps/' + APP_ID + '?force=true'
 TIME_DELAY_LONG = 15
 TIME_DELAY_SORT = 5
 
-ROOT_PASSWORD = ''
+ROOT_PASSWORD = '444455555'
 MODEL_ENGINE = 'mysql+pymysql://root:autoscaling@secret@127.0.0.1:3306/policydb'
 SCHEMA = '''
 # PolicyDB

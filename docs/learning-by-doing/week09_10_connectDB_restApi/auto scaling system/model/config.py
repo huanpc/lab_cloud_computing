@@ -6,4 +6,5 @@ MODEL_CONFIG = {
     'port':"3306",
     'dbname':"policydb"
 }
-MODEL_ENGINE = 'mysql+pymysql://root:autoscaling@secret@127.0.0.1:3306/policydb'
+#MODEL_ENGINE = 'mysql+pymysql://root:autoscaling@secret@127.0.0.1:3306/policydb'
+MODEL_ENGINE = 'mysql+pymysql://root:autoscaling@secret@25.22.28.94:3306/autoscaling'

@@ -16,7 +16,7 @@
      "volumes": [
             {
                 "containerPath": "/test",
-                "hostPath": "/home/huanpc/auto scaling system",
+                "hostPath": "/home/huanpc/test",
                 "mode": "RO"
             }
         ]	
