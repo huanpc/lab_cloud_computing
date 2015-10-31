@@ -292,13 +292,13 @@ LAST_NAME = ['Abbott',
   'Caldwell',
   'Calhoun',]
 
-EMAIL = {}
+EMAIL = ' '
 TELEPHONE = '8888888888'
 FAX= '0'
 PASSWORD = '326edfc370f8e8e9a158003f239c8a8b381eb0ce'
 SALT = '1ZiUO8ztR'
-CART = ''
-WHISTLIST = ''
+CART = ' '
+WHISTLIST = ' '
 NEWSLETTER = '0'
 ADDRESS_ID = '0'
 CUSTOM_FIELD = ''
@@ -306,7 +306,7 @@ IP = '127.0.0.1'
 STATUS = '1'
 APPROVED ='1'
 SAFE = '1'
-TOKEN = ''
+TOKEN = ' '
 DATE_ADDED = '2015-10-25 00:00:46'
 
 #---------------------------------product sample --------------------------------------------------
